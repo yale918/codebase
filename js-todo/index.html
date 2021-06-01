@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul>li{
+  color:black
+}
+
+ul li {
+  cursor: pointer;
+  background: #eee;
+  position:relative;
+  font-size: 18px;
+  padding: 12px 8px 12px 40px;
+}
+ul li:nth-child(odd) {
+  background: rgb(223, 221, 221);
+}
+
+
+.close{
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+.close:hover{
+  background-color: red;
+}
+</style>
+
+
+
+</head>
+<body>
+  <header>
+    <h3>JS ToDo</h3>
+    <input id="inText" type="text" placeholder="Title..."/>
+    <input id="inButton" type="button" value="Add" />
+  </header>
+  <hr>
+
+  <ul id="todos"></ul>
+
+
+<script>
+
+const CloseButtonText = "\u00D7"
+
+const Todos = document.getElementById('todos')
+var NodeList = []
+const ListLength = 0
+
+
+window.onload = function(){
+  setTimeout(2000)
+  initList()
+  setTimeout(2000)
+  refreshList()
+  setTimeout(2000)
+  closeAct()
+}
+  
+const initList = ()=>{
+  AddNode("yale918");AddNode("athena77");AddNode("cloak")
+}
+
+const AddNode = (message)=>{
+  //create node 
+  const li = document.createElement('li')
+  const a = document.createElement('a');a.innerText = message
+  const span = document.createElement('span');span.innerText = CloseButtonText
+  span.className = "close"
+  li.appendChild(a)
+  li.appendChild(span)
+  
+  //node bind to tree
+  Todos.appendChild(li) 
+  //showNode(li);showList() //********************************
+}
+
+const refreshList = ()=>{
+  for(i=0;i<Todos.childElementCount;i++){
+    NodeList[i] = Todos.children[i]
+
+  }
+  
+}
+
+const deleteNode = () => {
+
+}
+
+const showNode = ()=>{
+  console.log("**** NodeList ****")
+  for(i=0;i<NodeList.length;i++){
+    console.log(NodeList[i].children[0].innerText)
+  }
+  console.log(".")
+}
+const showTree = ()=>{
+  console.log("**** Tree ****")
+  for(i=0;i<Todos.childElementCount;i++){
+    console.log(Todos.children[i].children[0].innerText)
+  }
+}
+
+const keyAct = ()=>{
+  document.getElementById("inText").addEventListener("keypress",(e)=>{
+    if(e.keyCode==13){
+      AddNode(e.target.value)
+      refreshList()
+      setTimeout(2000)
+      closeAct()
+      e.target.value=""
+    }
+  })
+}
+
+const buttonAct = ()=>{}
+closeAct()
+
+
+function closeAct(){
+  for(i=0;i<Todos.childElementCount;i++){
+    NodeList[i].children[1].onclick=function(){
+      console.log("will remove:"+ NodeList[NodeList.indexOf(this.parentElement)].children[0].innerText)
+      Todos.removeChild(Todos.childNodes[NodeList.indexOf(this.parentElement)])
+      NodeList.splice(NodeList.indexOf(this.parentElement),1)
+      refreshList()
+      showNode()  //**************
+      showTree()  //**************
+
+  }}
+}
+keyAct()
+buttonAct()
+
+
+
+
+
+
+/*
+
+
+
+
+
+const todos = document.getElementById('todos')
+
+
+const getList = (todo)=>{
+  const arr = []
+  //console.log(todo.children[0])
+  for(i=0;i<todo.childElementCount;i++){
+    arr[i] = todo.children[i]
+  }
+  return (arr)
+}
+
+
+const newTodo = (text)=>{
+  const li = document.createElement('li')
+  
+  const a = document.createElement('a')
+  a.className="message"
+  a.innerText=text
+  li.appendChild(a)
+
+
+  const span = document.createElement('span')
+  span.className="close"
+  var txt = document.createTextNode("\u00D7");
+  span.appendChild(txt)
+  li.appendChild(span)
+  return(li)
+}
+const fixTodo = (li)=>{
+  return(li)
+}
+const bindTodo =(todo,li)=>{
+  todo.appendChild(li)
+}
+const getNodeData = (node,num,flag)=>{
+  const message = node.children[0].innerText+ " ("+num+")  "
+  if(flag=="add"){
+    console.log(message)
+    console.log(todos)
+  }
+  return message
+}
+function createNode(num){
+  for(i=0;i<num;i++){
+    const str = "'"+i+i+i+i+i+i+i+"'"
+    //console.log(str)
+    const newNode = newTodo(str)
+    const fixedNode = fixTodo(newNode)
+    bindTodo(todos, fixedNode)
+  }
+  
+}
+//createNode(5)
+const nodeList = getList(todos)
+//console.log(nodeList)
+CloseAndRender(nodeList)
+
+
+
+function CloseAndRender(nodelist){
+  //console.log(nodelist)
+  const closeList = nodelist.map(function(nodel){
+    return nodel.children[1]
+  })
+  for(i=0;i<closeList.length;i++){
+    closeList[i].onclick = function(){
+      //const show = 
+      console.log("delete: "+getNodeData(todos.children[todos.childElementCount-1],todos.childElementCount))
+      //console.log("delete: ", nodelist[closeList.indexOf(this)].children[0].innerText)
+      //console.log("before: ",nodelist)
+      nodelist.splice(nodeList.indexOf(this),1)
+      console.log("after: ",nodelist)
+      const div = this.parentElement;
+      div.style.display = "none"
+    }
+  }
+}
+
+
+const keyInput = (nodeList)=>{
+    document.getElementById('inText').addEventListener('keydown',function(e){
+      if(e.keyCode==13){
+        const newNode = newTodo(e.target.value)
+        const fixedNode = fixTodo(newNode)
+        bindTodo(todos, fixedNode)
+        getNodeData(todos.children[todos.childElementCount-1],todos.childElementCount,"add")
+        e.target.value=""
+        nodeList = getList(todos)
+        CloseAndRender(nodeList)
+        
+      }
+    })
+}
+
+const buttonInput = (nodeList)=>{
+  document.getElementById('inButton').addEventListener('click',function(e){
+        const newNode = newTodo(document.getElementById('inText').value)
+        const fixedNode = fixTodo(newNode)
+        bindTodo(todos, fixedNode)
+        getNodeData(todos.children[todos.childElementCount-1],todos.childElementCount,"add")
+        nodeList = getList(todos)
+        CloseAndRender(nodeList)
+        document.getElementById('inText').value=""
+
+    })
+}
+
+keyInput(nodeList)
+buttonInput(nodeList)
+
+
+*/
+</script>
+</body>
+</html>
+
+
+
