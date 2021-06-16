@@ -1,0 +1,32 @@
+.container{
+  border:2px solid #DFA612;
+  color: black;
+  display:flex;
+  font-family: sans-serif;
+  font-weight:bold
+}
+
+.a{
+  flex-basis: 100%;
+  flex-grow: 1;
+  line-height:5px;
+  padding:10px;
+}
+
+.item{
+  background-color: #4AAE9B;
+  font-weight:normal;
+  margin-top:5px;
+  margin-bottom:5px;
+  padding:10px;
+  border-radius: 10px;
+}
+
+
+
+.b{
+  background-color: #6DB65B;
+  flex-basis:100%;
+  flex-grow:1;
+  padding:10px;
+}
